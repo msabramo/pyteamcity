@@ -9,6 +9,7 @@ import textwrap
 import xml.etree.ElementTree as ET
 
 import requests
+import vcr
 
 
 class HTTPError(Exception):
@@ -69,10 +70,14 @@ def endpoint(url_pattern, method='GET'):
                 return url
             if return_type == 'request':
                 return request
-            if method == 'GET':
-                response = self._get(url)
-            elif method == 'POST':
-                response = self._post(url)
+            print('*** URL: %s' % url)
+            cassette_file = 'vcr_cassettes/%s/%s/cassette.yaml' % (
+                method, url.replace('://', '/'))
+            with vcr.use_cassette(cassette_file, record_mode='all'):
+                if method == 'GET':
+                    response = self._get(url)
+                elif method == 'POST':
+                    response = self._post(url)
             try:
                 response.raise_for_status()
             except requests.exceptions.HTTPError:

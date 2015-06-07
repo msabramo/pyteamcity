@@ -25,7 +25,7 @@ setup(
     author_email='yotamoron@yahoo.com',
     py_modules=['pyteamcity'],
     zip_safe=False,
-    install_requires=['requests'],
+    install_requires=['requests', 'vcrpy'],
     license='MIT',
     classifiers=[
         'Programming Language :: Python :: 2',
